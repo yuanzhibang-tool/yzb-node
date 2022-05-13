@@ -1,10 +1,10 @@
 {
-  "name": "ipc-communication",
+  "name": "yzb-node",
   "version": "1.0.0",
-  "description": "渲染进程与主进程间进行通信的方案",
+  "description": "猿之棒node主进程间与渲染进程通信的方案",
   "main": "dist/index.js",
   "module": "dist/index.js",
-  "types": "index.d.ts",
+  "types": "dist/index.d.ts",
   "scripts": {
     "build": "tsc",
     "test": "jest --runInBand --env=node --colors --coverage test"
@@ -17,13 +17,10 @@
   "license": "ISC",
   "devDependencies": {
     "@types/jest": "^25.2.1",
-    "@types/jquery": "^3.3.34",
     "@types/node": "^13.13.52",
     "@types/uuid": "^7.0.1",
-    "copy-webpack-plugin": "^5.1.1",
     "jest": "^25.2.7",
     "ts-jest": "^25.3.1",
-    "ts-loader": "^6.2.1",
     "typescript": "^3.8.3",
     "webpack": "^4.41.6",
     "webpack-cli": "^3.3.11"

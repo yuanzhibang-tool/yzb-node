@@ -3,7 +3,7 @@
   "compileOnSave": true,
   "compilerOptions": {
     "lib": ["es2018", "dom"],
-    "watch": true,
+    "watch": false,
     "declaration": true,
     /* Basic Options */
     // "incremental": true,                   /* Enable incremental compilation */
