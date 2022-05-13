@@ -4,7 +4,8 @@
   "description": "渲染进程与主进程间进行通信的方案",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "webpack --mode production",
+    "test": "jest --runInBand --env=node --colors --coverage test"
   },
   "repository": {
     "type": "git",
