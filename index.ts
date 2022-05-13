@@ -79,7 +79,16 @@ class IpcNode {
     this.messageCallbackMap.delete(topic);
     this.onceMessageCallbackMap.delete(topic);
   }
-  send(topic: string, topicData: any) {}
+  send(topic: string, data: any) {
+    const message = {
+      __type: 'yzb_ipc_renderer_message',
+      topic,
+      data,
+    };
+    if (process.send) {
+      process.send(message);
+    }
+  }
 }
 
 module.exports = { ipc: new IpcNode() };
