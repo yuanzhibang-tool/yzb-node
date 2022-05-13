@@ -7,7 +7,7 @@
   "scripts": {
     "build": "tsc",
     "test": "jest --runInBand --env=node --colors --coverage test",
-    "prepublish-npm": "tsc && copy package.json dist/package.json",
+    "prepublish-npm": "tsc && cp package.json dist/package.json",
     "publish-npm": "cd dist && npm publish --access public"
   },
   "repository": {
