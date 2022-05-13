@@ -8,7 +8,7 @@
     "build": "tsc",
     "test": "jest --runInBand --env=node --colors --coverage test",
     "prepublish-npm": "tsc && cp package.json dist/package.json",
-    "publish-npm": "cd dist && npm publish --access public"
+    "publish-npm": "cd dist && npm publish --access public --registry https://registry.npmjs.com"
   },
   "repository": {
     "type": "git",
