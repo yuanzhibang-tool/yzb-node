@@ -1,13 +1,14 @@
 {
-  "name": "yzb-node",
-  "version": "1.0.0",
+  "name": "@yuanzhibang/node",
+  "version": "0.0.2",
   "description": "猿之棒node主进程间与渲染进程通信的方案",
-  "main": "dist/index.js",
-  "module": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "module": "index.js",
+  "types": "index.d.ts",
   "scripts": {
     "build": "tsc",
-    "test": "jest --runInBand --env=node --colors --coverage test"
+    "test": "jest --runInBand --env=node --colors --coverage test",
+    "prepublish-npm": "tsc && copy package.json dist/package.json",
+    "publish-npm": "cd dist && npm publish --access public"
   },
   "repository": {
     "type": "git",
@@ -21,8 +22,6 @@
     "@types/uuid": "^7.0.1",
     "jest": "^25.2.7",
     "ts-jest": "^25.3.1",
-    "typescript": "^3.8.3",
-    "webpack": "^4.41.6",
-    "webpack-cli": "^3.3.11"
+    "typescript": "^3.8.3"
   }
 }
