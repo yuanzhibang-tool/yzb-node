@@ -1,6 +1,6 @@
 {
   "name": "@yuanzhibang/node",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "猿之棒node主进程间与渲染进程通信的方案",
   "module": "index.js",
   "types": "index.d.ts",
