@@ -1,4 +1,4 @@
-class IpcMainSender {
+class IpcSender {
   // 用以进行回调的识别字符串
   identity: string;
   constructor(identity: string) {
@@ -25,7 +25,7 @@ class IpcMainSender {
     }
   }
 }
-class IpcMain {
+class IpcNode {
   messageCallbackMap = new Map();
   onceMessageCallbackMap = new Map();
   constructor() {
@@ -40,7 +40,7 @@ class IpcMain {
             const messageTopic = data.topic;
             const messageTopicData = data.data;
             // 查找对应的回调,有则执行,无则不执行
-            const sender = new IpcMainSender(messageIdentity);
+            const sender = new IpcSender(messageIdentity);
             if (this.messageCallbackMap.has(messageTopic)) {
               const callback = this.messageCallbackMap.get(messageTopic);
               callback(sender, messageTopicData);
@@ -78,4 +78,4 @@ class IpcMain {
   send(topic: string, topicData: any) {}
 }
 
-export const ipc = new IpcMain();
+export const ipc = new IpcNode();
