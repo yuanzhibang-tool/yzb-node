@@ -45,7 +45,7 @@ class IpcNode {
               const callback = this.messageCallbackMap.get(messageTopic);
               callback(sender, messageTopicData);
             } else if (this.onceMessageCallbackMap.has(messageTopic)) {
-              const callback = this.messageCallbackMap.get(messageTopic);
+              const callback = this.onceMessageCallbackMap.get(messageTopic);
               callback(sender, messageTopicData);
               // 执行完毕后,清除回调
               this.onceMessageCallbackMap.delete(messageTopic);
