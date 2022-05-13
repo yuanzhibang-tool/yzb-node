@@ -75,6 +75,10 @@ class IpcNode {
     }
     this.onceMessageCallbackMap.set(topic, callback);
   }
+  removeListener(topic: string){
+    this.messageCallbackMap.delete(topic);
+    this.onceMessageCallbackMap.delete(topic);
+  }
   send(topic: string, topicData: any) {}
 }
 
