@@ -15,7 +15,7 @@ class IpcSender {
 
   sendMessageWithType(type: string, result: any) {
     const message = {
-      __type: 'yzb_ipc_message',
+      __type: 'yzb_ipc_node_message',
       identity: this.identity,
       data: result,
       type,
