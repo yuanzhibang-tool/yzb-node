@@ -78,4 +78,4 @@ class IpcNode {
   send(topic: string, topicData: any) {}
 }
 
-export const ipc = new IpcNode();
+module.exports = { ipc: new IpcNode() };

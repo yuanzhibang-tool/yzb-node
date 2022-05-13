@@ -2,9 +2,11 @@
   "name": "ipc-communication",
   "version": "1.0.0",
   "description": "渲染进程与主进程间进行通信的方案",
-  "main": "index.js",
+  "main": "dist/index.js",
+  "module": "dist/index.js",
+  "types": "index.d.ts",
   "scripts": {
-    "build": "webpack --mode production",
+    "build": "tsc",
     "test": "jest --runInBand --env=node --colors --coverage test"
   },
   "repository": {
