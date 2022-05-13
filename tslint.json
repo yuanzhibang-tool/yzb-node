@@ -103,6 +103,5 @@
         "check-typecast"
       ]
     }
-  },
-  "rulesDirectory": ["codelyzer"]
+  }
 }
