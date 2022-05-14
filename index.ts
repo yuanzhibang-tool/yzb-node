@@ -33,7 +33,7 @@ class IpcNode {
       if (messageObject !== null && typeof messageObject === 'object') {
         if (messageObject.hasOwnProperty('__type')) {
           const messageType = messageObject.__type;
-          if (messageType === 'yzb_ipc_message') {
+          if (messageType === 'yzb_ipc_node_message') {
             // 此为ipc消息类型
             const messageIdentity = messageObject.identity;
             const data = messageObject.data;
@@ -75,7 +75,7 @@ class IpcNode {
     }
     this.onceMessageCallbackMap.set(topic, callback);
   }
-  removeListener(topic: string){
+  removeListener(topic: string) {
     this.messageCallbackMap.delete(topic);
     this.onceMessageCallbackMap.delete(topic);
   }
