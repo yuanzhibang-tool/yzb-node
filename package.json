@@ -3,6 +3,8 @@
   "version": "0.0.12",
   "description": "猿之棒node主进程间与渲染进程通信的方案",
   "type": "module",
+  "main": "commonjs/index.js",
+  "module": "es6/index.js",
   "scripts": {
     "build": "tsc",
     "test": "jest --runInBand --env=node --colors --coverage test",

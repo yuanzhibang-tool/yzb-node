@@ -91,4 +91,4 @@ class IpcNode {
   }
 }
 
-module.exports = { ipc: new IpcNode() };
+export const ipc = new IpcNode();
