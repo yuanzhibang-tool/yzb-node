@@ -2,9 +2,8 @@
   "name": "@yuanzhibang/node",
   "version": "0.0.14",
   "description": "猿之棒node主进程间与渲染进程通信的方案",
-  "type": "module",
   "main": "commonjs/index.js",
-  "module": "es6/index.js",
+  "module": "es5/index.js",
   "scripts": {
     "build": "tsc",
     "test": "jest --runInBand --env=node --colors --coverage test",
@@ -27,9 +26,9 @@
   },
   "exports": {
     ".": {
-      "import": "./es6/index.js",
+      "import": "./es5/index.js",
       "require": "./commonjs/index.js",
-      "types": "./es6/index.d.ts"
+      "types": "./es5/index.d.ts"
     }
   }
 }
