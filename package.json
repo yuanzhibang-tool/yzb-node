@@ -1,6 +1,6 @@
 {
   "name": "@yuanzhibang/node",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "猿之棒node主进程间与渲染进程通信的方案",
   "module": "es2020/index.js",
   "types": "es2020/index.d.ts",
@@ -19,12 +19,10 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "@types/jest": "^25.2.1",
-    "@types/node": "^13.13.52",
-    "@types/uuid": "^7.0.1",
-    "jest": "^25.2.7",
-    "ts-jest": "^25.3.1",
-    "typescript": "^3.8.3"
+    "@types/jest": "^27.5.1",
+    "@types/node": "^17.0.33",
+    "ts-jest": "^28.0.2",
+    "typescript": "^4.6.4"
   },
   "exports": {
     ".": {
