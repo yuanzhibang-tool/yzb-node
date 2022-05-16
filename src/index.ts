@@ -90,7 +90,7 @@ export class IpcNode {
       data,
     };
     if (process.send) {
-      process.send(message);
+      return process.send(message);
     }
   }
 }

@@ -163,4 +163,19 @@ describe('IpcNode check', () => {
         instance.removeListener(testTopic);
         expect(instance.messageCallbackMap.size).toEqual(0);
     });
+
+    test('check send', () => {
+        const instance = new IpcNode();
+        const topicData = { k1: 'v1' };
+        const testTopic = 'test_type';
+        const expectMessage = {
+            __type: 'yzb_ipc_renderer_message',
+            testTopic,
+            topicData,
+        };
+        expect.assertions(1);
+        (instance.send(testTopic, topicData) as any).then((message) => {
+            expect(message).toEqual(expectMessage);
+        });
+    });
 });
