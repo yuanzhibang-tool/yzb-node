@@ -16,9 +16,8 @@ export class IpcSender {
   sendMessageWithType(type: string, result: any) {
     const message = this.getMessage(type, result);
     if (process.send) {
-      process.send(message);
+      return process.send(message);
     }
-    return message;
   }
   getMessage(type: string, result: any) {
     const message = {
@@ -62,7 +61,7 @@ export class IpcNode {
       }
     });
   }
-  on(topic: string, callback: () => {}) {
+  on(topic: string, callback: (sender: IpcSender, message: any) => void) {
     if (
       this.messageCallbackMap.has(topic) ||
       this.onceMessageCallbackMap.has(topic)
@@ -71,7 +70,7 @@ export class IpcNode {
     }
     this.messageCallbackMap.set(topic, callback);
   }
-  once(topic: string, callback: () => {}) {
+  once(topic: string, callback: (sender: IpcSender, message: any) => void) {
     if (
       this.messageCallbackMap.has(topic) ||
       this.onceMessageCallbackMap.has(topic)
