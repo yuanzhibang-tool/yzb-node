@@ -1,14 +1,21 @@
 import { } from 'jest';
 import { IpcSender, IpcNode } from '../src/index';
 
-(global as any).process = {
-    send: (message: any) => {
+class MockProcess {
+    messageCallback: ((message: any) => void) | null = null;
+    send(message: any) {
         return new Promise((resolve, reject) => {
             resolve(message);
         });
-    },
-    on: (topic: string, callback: (message: any) => void) => { }
-};
+    }
+    on(messageType: string, callback: (message: any) => void) {
+        if (messageType === 'message') {
+            this.messageCallback = callback;
+        }
+    }
+}
+
+(global as any).process = new MockProcess();
 
 describe('IpcSender check', () => {
     test('check constructor', () => {
@@ -177,5 +184,45 @@ describe('IpcNode check', () => {
         (instance.send(testTopic, topicData) as any).then((message) => {
             expect(message).toEqual(expectMessage);
         });
+    });
+
+    test('check on message', () => {
+        const identity = '123456';
+        const instance = new IpcNode();
+        const testTopic = 'test-topic';
+        const testTopicData = { k1: 'v1' };
+        const messageData = { topic: testTopic, data: testTopicData };
+        const expectMessage = {
+            __type: 'yzb_ipc_node_message',
+            identity,
+            data: messageData,
+        };
+        expect.assertions(3);
+        instance.on(testTopic, (sender, message) => {
+            expect(sender.identity).toEqual(identity);
+            expect(message).toEqual(messageData.data);
+        });
+        (process as any).messageCallback(expectMessage);
+        expect(instance.messageCallbackMap.size).toEqual(1);
+    });
+
+    test('check on message once', () => {
+        const identity = '123456';
+        const instance = new IpcNode();
+        const testTopic = 'test-topic';
+        const testTopicData = { k1: 'v1' };
+        const messageData = { topic: testTopic, data: testTopicData };
+        const expectMessage = {
+            __type: 'yzb_ipc_node_message',
+            identity,
+            data: messageData,
+        };
+        expect.assertions(3);
+        instance.once(testTopic, (sender, message) => {
+            expect(sender.identity).toEqual(identity);
+            expect(message).toEqual(messageData.data);
+        });
+        (process as any).messageCallback(expectMessage);
+        expect(instance.onceMessageCallbackMap.size).toEqual(0);
     });
 });
