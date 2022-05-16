@@ -171,6 +171,21 @@ describe('IpcNode check', () => {
         expect(instance.messageCallbackMap.size).toEqual(0);
     });
 
+    test('check removeAllListener', () => {
+        const exeName = 'test-exe-name';
+        const instance = new IpcNode();
+        const testOnCallback = (sender: IpcSender, message): void => { console.log(message); };
+        const testOnCallback1 = (sender: IpcSender, message): void => { console.log(message); };
+        const testTopic = 'test-topic';
+        const testTopic1 = 'test-topic1';
+
+        instance.once(testTopic, testOnCallback);
+        instance.on(testTopic1, testOnCallback1);
+        instance.removeAllListener();
+        expect(instance.messageCallbackMap.size).toEqual(0);
+        expect(instance.onceMessageCallbackMap.size).toEqual(0);
+    });
+
     test('check send', () => {
         const instance = new IpcNode();
         const TopicMessage = { k1: 'v1' };

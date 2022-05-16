@@ -83,6 +83,12 @@ export class IpcNode {
     this.messageCallbackMap.delete(topic);
     this.onceMessageCallbackMap.delete(topic);
   }
+
+  removeAllListener() {
+    this.messageCallbackMap.clear();
+    this.onceMessageCallbackMap.clear();
+  }
+
   send(topic: string, topicMessage: any) {
     const message = {
       __type: 'yzb_ipc_renderer_message',
