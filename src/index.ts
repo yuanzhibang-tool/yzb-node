@@ -42,15 +42,15 @@ export class IpcNode {
             const messageIdentity = messageObject.identity;
             const data = messageObject.data;
             const messageTopic = data.topic;
-            const messageTopicData = data.data;
+            const messageTopicMessage = data.message;
             // 查找对应的回调,有则执行,无则不执行
             const sender = new IpcSender(messageIdentity);
             if (this.messageCallbackMap.has(messageTopic)) {
               const callback = this.messageCallbackMap.get(messageTopic);
-              callback(sender, messageTopicData);
+              callback(sender, messageTopicMessage);
             } else if (this.onceMessageCallbackMap.has(messageTopic)) {
               const callback = this.onceMessageCallbackMap.get(messageTopic);
-              callback(sender, messageTopicData);
+              callback(sender, messageTopicMessage);
               // 执行完毕后,清除回调
               this.onceMessageCallbackMap.delete(messageTopic);
             } else {
@@ -83,11 +83,11 @@ export class IpcNode {
     this.messageCallbackMap.delete(topic);
     this.onceMessageCallbackMap.delete(topic);
   }
-  send(topic: string, data: any) {
+  send(topic: string, topicMessage: any) {
     const message = {
       __type: 'yzb_ipc_renderer_message',
       topic,
-      data,
+      message: topicMessage,
     };
     if (process.send) {
       return process.send(message);
