@@ -1,4 +1,4 @@
-class IpcSender {
+export class IpcSender {
   // 用以进行回调的识别字符串
   identity: string;
   constructor(identity: string) {
@@ -6,11 +6,11 @@ class IpcSender {
   }
   // 结果回调
   next = (result: any = null) => {
-    this.sendMessageWithType('next', result);
+    return this.sendMessageWithType('next', result);
   };
   // 错误回调
   error = (error: any = null) => {
-    this.sendMessageWithType('error', error);
+    return this.sendMessageWithType('error', error);
   };
 
   sendMessageWithType(type: string, result: any) {
@@ -18,6 +18,7 @@ class IpcSender {
     if (process.send) {
       process.send(message);
     }
+    return message;
   }
   getMessage(type: string, result: any) {
     const message = {
@@ -29,7 +30,7 @@ class IpcSender {
     return message;
   }
 }
-class IpcNode {
+export class IpcNode {
   messageCallbackMap = new Map();
   onceMessageCallbackMap = new Map();
   constructor() {
