@@ -14,15 +14,19 @@ class IpcSender {
   };
 
   sendMessageWithType(type: string, result: any) {
+    const message = this.getMessage(type, result);
+    if (process.send) {
+      process.send(message);
+    }
+  }
+  getMessage(type: string, result: any) {
     const message = {
       __type: 'yzb_ipc_node_message',
       identity: this.identity,
       data: result,
       type,
     };
-    if (process.send) {
-      process.send(message);
-    }
+    return message;
   }
 }
 class IpcNode {
