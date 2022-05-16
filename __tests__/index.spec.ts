@@ -173,15 +173,15 @@ describe('IpcNode check', () => {
 
     test('check send', () => {
         const instance = new IpcNode();
-        const topicData = { k1: 'v1' };
+        const TopicMessage = { k1: 'v1' };
         const testTopic = 'test_type';
         const expectMessage = {
             __type: 'yzb_ipc_renderer_message',
             testTopic,
-            topicData,
+            TopicMessage,
         };
         expect.assertions(1);
-        (instance.send(testTopic, topicData) as any).then((message) => {
+        (instance.send(testTopic, TopicMessage) as any).then((message) => {
             expect(message).toEqual(expectMessage);
         });
     });
@@ -190,8 +190,8 @@ describe('IpcNode check', () => {
         const identity = '123456';
         const instance = new IpcNode();
         const testTopic = 'test-topic';
-        const testTopicData = { k1: 'v1' };
-        const messageData = { topic: testTopic, data: testTopicData };
+        const testTopicMessage = { k1: 'v1' };
+        const messageData = { topic: testTopic, message: testTopicMessage };
         const expectMessage = {
             __type: 'yzb_ipc_node_message',
             identity,
@@ -200,7 +200,7 @@ describe('IpcNode check', () => {
         expect.assertions(3);
         instance.on(testTopic, (sender, message) => {
             expect(sender.identity).toEqual(identity);
-            expect(message).toEqual(messageData.data);
+            expect(message).toEqual(messageData.message);
         });
         (process as any).messageCallback(expectMessage);
         expect(instance.messageCallbackMap.size).toEqual(1);
@@ -210,8 +210,8 @@ describe('IpcNode check', () => {
         const identity = '123456';
         const instance = new IpcNode();
         const testTopic = 'test-topic';
-        const testTopicData = { k1: 'v1' };
-        const messageData = { topic: testTopic, data: testTopicData };
+        const testTopicMessage = { k1: 'v1' };
+        const messageData = { topic: testTopic, message: testTopicMessage };
         const expectMessage = {
             __type: 'yzb_ipc_node_message',
             identity,
@@ -220,7 +220,7 @@ describe('IpcNode check', () => {
         expect.assertions(3);
         instance.once(testTopic, (sender, message) => {
             expect(sender.identity).toEqual(identity);
-            expect(message).toEqual(messageData.data);
+            expect(message).toEqual(messageData.message);
         });
         (process as any).messageCallback(expectMessage);
         expect(instance.onceMessageCallbackMap.size).toEqual(0);
