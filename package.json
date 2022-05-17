@@ -1,6 +1,6 @@
 {
   "name": "@yuanzhibang/node",
-  "version": "0.0.22",
+  "version": "0.0.23",
   "description": "猿之棒node主进程间与渲染进程通信的方案",
   "main": "commonjs/index.js",
   "module": "es6/index.js",
@@ -17,7 +17,7 @@
     "type": "git",
     "url": "https://github.com/yuanzhibang-tool/yzb-node.git"
   },
-  "author": "",
+  "author": "yuanzhibang.com",
   "license": "Apache License 2.0",
   "devDependencies": {
     "@types/jest": "^27.5.1",
