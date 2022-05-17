@@ -1,4 +1,3 @@
-import { } from 'jest';
 import { IpcSender, IpcNode } from '../src/index';
 
 class MockProcess {
