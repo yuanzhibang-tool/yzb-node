@@ -1,3 +1,3 @@
-# Ipc-Communication
+# Yzb-Node
 
-渲染进程与主进程间进行通信的方案
+猿之棒 extension 拓展 node 的辅助库,用以优化 renderer 和 node 进程的通信,具体使用请参考文档
