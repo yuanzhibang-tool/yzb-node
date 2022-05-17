@@ -188,11 +188,11 @@ describe('IpcNode check', () => {
     test('check send', () => {
         const instance = new IpcNode();
         const TopicMessage = { k1: 'v1' };
-        const testTopic = 'test_type';
+        const testTopic = 'test_topic';
         const expectMessage = {
             __type: 'yzb_ipc_renderer_message',
-            testTopic,
-            TopicMessage,
+            topic: testTopic,
+            message: TopicMessage,
         };
         expect.assertions(1);
         (instance.send(testTopic, TopicMessage) as any).then((message) => {
