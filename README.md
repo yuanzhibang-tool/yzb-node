@@ -16,11 +16,11 @@ https://www.npmjs.com/package/@yuanzhibang/node
 
 ## 安装
 
-`npm i @yuanzhibang/node --save-dev`
+`npm i @yuanzhibang/node --save`
 
 或者
 
-`yarn add @yuanzhibang/node --dev`
+`yarn add @yuanzhibang/node --save`
 
 ## 使用
 
