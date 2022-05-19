@@ -28,6 +28,8 @@ https://www.npmjs.com/package/@yuanzhibang/node
 
 _请参考_
 
-`typescript`使用演示 https://github.com/yuanzhibang-tool/yzb-extension-demo-ts/blob/main/src/index.ts
+`typescript`使用演示
+https://github.com/yuanzhibang-tool/yzb-extension-demo-ts/blob/main/src/index.ts
 
-`javascript`使用演示 https://github.com/yuanzhibang-tool/yzb-extension-demo-js/blob/main/src/index.js
+`javascript`使用演示
+https://github.com/yuanzhibang-tool/yzb-extension-demo-js/blob/main/src/index.js
