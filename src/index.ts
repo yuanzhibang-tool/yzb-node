@@ -66,7 +66,7 @@ export class IpcSender {
 
 
 /**
- * 渲染进程的主体类
+ * 拓展进程的主体类
  */
 export class IpcNode {
   messageCallbackMap = new Map();
