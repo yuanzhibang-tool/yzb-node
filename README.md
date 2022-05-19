@@ -20,7 +20,7 @@ https://www.npmjs.com/package/@yuanzhibang/node
 
 或者
 
-`yarn add @yuanzhibang/node --save`
+`yarn add @yuanzhibang/node`
 
 ## 使用
 
