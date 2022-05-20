@@ -4,7 +4,7 @@
  */
 export class IpcSender {
   /**
-   * 用以进行回调的识别字符串
+   * 内部变量无需关注,用以进行回调的识别字符串
    */
   identity: string;
 
@@ -69,8 +69,19 @@ export class IpcSender {
  * 拓展进程的主体类
  */
 export class IpcNode {
-  messageCallbackMap = new Map();
-  onceMessageCallbackMap = new Map();
+
+  /**
+   * 内部变量无需关注,on保存的回调保存map
+   */
+  messageCallbackMap = new Map<string, (sender: IpcSender, message: any) => void>();
+
+  /**
+   * 内部变量无需关注,once保存的回调保存map
+   */
+  onceMessageCallbackMap = new Map<string, (sender: IpcSender, message: any) => void>();
+  /**
+   * 创建类实例
+   */
   constructor() {
     process.on('message', (messageObject: any) => {
       if (messageObject !== null && typeof messageObject === 'object') {
@@ -86,10 +97,14 @@ export class IpcNode {
             const sender = new IpcSender(messageIdentity);
             if (this.messageCallbackMap.has(messageTopic)) {
               const callback = this.messageCallbackMap.get(messageTopic);
-              callback(sender, messageTopicMessage);
+              if (callback) {
+                callback(sender, messageTopicMessage);
+              }
             } else if (this.onceMessageCallbackMap.has(messageTopic)) {
               const callback = this.onceMessageCallbackMap.get(messageTopic);
-              callback(sender, messageTopicMessage);
+              if (callback) {
+                callback(sender, messageTopicMessage);
+              }
               // 执行完毕后,清除回调
               this.onceMessageCallbackMap.delete(messageTopic);
             } else {
