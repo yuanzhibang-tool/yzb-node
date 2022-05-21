@@ -169,7 +169,7 @@ export class IpcNode {
    * @param topicMessage tpoic的消息的消息体,默认为空对象
    * @returns  该return用以进行单元测试无需关注
    */
-  send(topic: string, topicMessage: any = {}) {
+  send(topic: string, topicMessage: any = null) {
     const message = {
       __type: 'yzb_ipc_renderer_message',
       topic,
