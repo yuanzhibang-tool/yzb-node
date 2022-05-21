@@ -166,10 +166,10 @@ export class IpcNode {
   /**
    * 向渲染进程发送topic消息
    * @param topic 消息的topic
-   * @param topicMessage tpoic的消息的消息体
+   * @param topicMessage tpoic的消息的消息体,默认为空对象
    * @returns  该return用以进行单元测试无需关注
    */
-  send(topic: string, topicMessage: any) {
+  send(topic: string, topicMessage: any = {}) {
     const message = {
       __type: 'yzb_ipc_renderer_message',
       topic,
