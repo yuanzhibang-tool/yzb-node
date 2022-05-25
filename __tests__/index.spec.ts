@@ -54,6 +54,36 @@ describe('IpcDataHelper check', () => {
         const expectResult = '01020304';
         expect(result).toEqual(expectResult);
     });
+
+    test('check bufferToUInt8', () => {
+        const inputValue = Buffer.alloc(4);
+        inputValue[0] = 0x01;
+        inputValue[1] = 0x02;
+        inputValue[2] = 0x03;
+        inputValue[3] = 0x04;
+        const result = IpcDataHelper.bufferToUInt8(inputValue);
+        const expectResult = new Uint8Array(4);
+        expectResult[0] = 0x01;
+        expectResult[1] = 0x02;
+        expectResult[2] = 0x03;
+        expectResult[3] = 0x04;
+        expect(result).toEqual(expectResult);
+    });
+
+    test('check uint8ToBuffer', () => {
+        const inputValue = new Uint8Array(4);
+        inputValue[0] = 0x01;
+        inputValue[1] = 0x02;
+        inputValue[2] = 0x03;
+        inputValue[3] = 0x04;
+        const result = IpcDataHelper.uint8ToBuffer(inputValue);
+        const expectResult = Buffer.alloc(4);
+        expectResult[0] = 0x01;
+        expectResult[1] = 0x02;
+        expectResult[2] = 0x03;
+        expectResult[3] = 0x04;
+        expect(result).toEqual(expectResult);
+    });
 });
 
 describe('IpcSender check', () => {

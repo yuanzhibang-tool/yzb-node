@@ -33,6 +33,14 @@ export class IpcDataHelper {
     return hex.join('');
   }
 
+  static bufferToUInt8(buffer: Buffer) {
+    return new Uint8Array(buffer);
+  }
+
+  static uint8ToBuffer(u8: Uint8Array) {
+    return Buffer.from(u8);
+  }
+
   static encode(type: 'base64' | 'hex' | 'string', data: any) {
     let stringValue: string | null = null;
     switch (type) {
