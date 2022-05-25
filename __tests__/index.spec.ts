@@ -36,7 +36,7 @@ describe('IpcDataHelper check', () => {
     test('check hexToBytes', () => {
         const inputValue = '01020304';
         const result = IpcDataHelper.hexToBytes(inputValue);
-        const expectResult = new Uint8Array(4);
+        const expectResult = Buffer.alloc(4);
         expectResult[0] = 0x01;
         expectResult[1] = 0x02;
         expectResult[2] = 0x03;
@@ -45,7 +45,7 @@ describe('IpcDataHelper check', () => {
     });
 
     test('check bytesToHex', () => {
-        const inputValue = new Uint8Array(4);
+        const inputValue = Buffer.alloc(4);
         inputValue[0] = 0x01;
         inputValue[1] = 0x02;
         inputValue[2] = 0x03;

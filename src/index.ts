@@ -10,7 +10,7 @@ export class IpcDataHelper {
     return buff;
   }
   static hexToBytes(hex: string) {
-    const u8Array = new Uint8Array(hex.length / 2);
+    const u8Array = Buffer.alloc(hex.length / 2);
     for (let c = 0; c < hex.length; c += 2) {
       const subString = hex.substring(c, c + 2);
       const value = parseInt(subString, 16);
@@ -20,7 +20,7 @@ export class IpcDataHelper {
     return u8Array;
   }
 
-  static bytesToHex(bytes: Uint8Array) {
+  static bytesToHex(bytes: Buffer) {
     const hex: Array<string> = [];
     // tslint:disable-next-line: prefer-for-of
     for (let i = 0; i < bytes.length; i++) {
@@ -33,7 +33,7 @@ export class IpcDataHelper {
     return hex.join('');
   }
 
-  static encode(type: 'base64' | 'hex' | 'string', data: Uint8Array) {
+  static encode(type: 'base64' | 'hex' | 'string', data: any) {
     let stringValue: string | null = null;
     switch (type) {
       case 'base64':
