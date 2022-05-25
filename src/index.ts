@@ -47,54 +47,20 @@ export class IpcDataHelper {
     return new Uint8Array(buffer);
   }
 
-  static encode(type: 'base64' | 'hex' | 'string', inputData: Uint8Array | Buffer, encoding: BufferEncoding = 'utf8') {
+  static encode(type: BufferEncoding, inputData: Uint8Array | Buffer) {
     let stringValue: string | null = null;
-    switch (type) {
-      case 'base64':
-        if (inputData instanceof Uint8Array) {
-          stringValue = IpcDataHelper.bufferToBase64(IpcDataHelper.uint8ArrayToBuffer(inputData));
-        } else if ((inputData as any) instanceof Buffer) {
-          stringValue = IpcDataHelper.bufferToBase64(inputData);
-        }
-        break;
-      case 'hex':
-        if (inputData instanceof Uint8Array) {
-          stringValue = IpcDataHelper.bufferToHex(IpcDataHelper.uint8ArrayToBuffer(inputData));
-        } else if ((inputData as any) instanceof Buffer) {
-          stringValue = IpcDataHelper.bufferToHex(inputData as Buffer);
-        }
-        break;
-      case 'string':
-        if (inputData instanceof Uint8Array) {
-          stringValue = IpcDataHelper.bufferToString(IpcDataHelper.uint8ArrayToBuffer(inputData), encoding);
-        } else if ((inputData as any) instanceof Buffer) {
-          stringValue = IpcDataHelper.bufferToString(inputData, encoding);
-        }
-        break;
-      default:
-        throw new Error(`input data not support type '${type}'`);
-        break;
+    if (inputData instanceof Uint8Array) {
+      inputData = IpcDataHelper.uint8ArrayToBuffer(inputData);
     }
-    return {
+    stringValue = IpcDataHelper.bufferToString(inputData as Buffer, type);
+    const encodeData: any = {
       type,
       data: stringValue
     };
+    return encodeData;
   }
-  static decode(type: 'base64' | 'hex' | 'string', inputData: string, encoding: BufferEncoding = 'utf8') {
-    switch (type) {
-      case 'base64':
-        return IpcDataHelper.base64ToBuffer(inputData);
-        break;
-      case 'hex':
-        return IpcDataHelper.hexToBuffer(inputData);
-        break;
-      case 'string':
-        return IpcDataHelper.stringToBuffer(inputData, encoding);
-        break;
-      default:
-        throw new Error(`input data not support type '${type}'`);
-        break;
-    }
+  static decode(type: BufferEncoding, inputData: string) {
+    return IpcDataHelper.stringToBuffer(inputData, type);
   }
 }
 /**
