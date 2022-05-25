@@ -1,4 +1,4 @@
-import { IpcSender, IpcNode } from '../src/index';
+import { IpcSender, IpcNode, IpcDataHelper } from '../src/index';
 
 class MockProcess {
     messageCallback: ((message: any) => void) | null = null;
@@ -15,6 +15,147 @@ class MockProcess {
 }
 
 (global as any).process = new MockProcess();
+
+describe('IpcDataHelper check', () => {
+    test('check bufferToBase64', () => {
+        const inputValue = Buffer.alloc(4);
+        inputValue[0] = 0x01;
+        inputValue[1] = 0x02;
+        inputValue[2] = 0x03;
+        inputValue[3] = 0x04;
+        const result = IpcDataHelper.bufferToBase64(inputValue as any);
+        const expectResult = 'AQIDBA==';
+        expect(result).toEqual(expectResult);
+    });
+    test('check base64ToBuffer', () => {
+        const inputValue = 'AQIDBA==';
+        const result = IpcDataHelper.base64ToBuffer(inputValue);
+        const expectResult = Buffer.alloc(4);
+        expectResult[0] = 0x01;
+        expectResult[1] = 0x02;
+        expectResult[2] = 0x03;
+        expectResult[3] = 0x04;
+        expect(result).toEqual(expectResult);
+    });
+    test('check hexToBuffer', () => {
+        const inputValue = '01020304';
+        const result = IpcDataHelper.hexToBuffer(inputValue);
+        const expectResult = Buffer.alloc(4);
+        expectResult[0] = 0x01;
+        expectResult[1] = 0x02;
+        expectResult[2] = 0x03;
+        expectResult[3] = 0x04;
+        expect(result).toEqual(expectResult);
+    });
+
+    test('check bufferToHex', () => {
+        const inputValue = Buffer.alloc(4);
+        inputValue[0] = 0x01;
+        inputValue[1] = 0x02;
+        inputValue[2] = 0x03;
+        inputValue[3] = 0x04;
+        const result = IpcDataHelper.bufferToHex(inputValue);
+        const expectResult = '01020304';
+        expect(result).toEqual(expectResult);
+    });
+
+    test('check bufferToUint8Array', () => {
+        const inputValue = Buffer.alloc(4);
+        inputValue[0] = 0x01;
+        inputValue[1] = 0x02;
+        inputValue[2] = 0x03;
+        inputValue[3] = 0x04;
+        const result = IpcDataHelper.bufferToUint8Array(inputValue);
+        const expectResult = new Uint8Array(4);
+        expectResult[0] = 0x01;
+        expectResult[1] = 0x02;
+        expectResult[2] = 0x03;
+        expectResult[3] = 0x04;
+        expect(result).toEqual(expectResult);
+    });
+
+    test('check uint8ArrayToBuffer', () => {
+        const inputValue = new Uint8Array(4);
+        inputValue[0] = 0x01;
+        inputValue[1] = 0x02;
+        inputValue[2] = 0x03;
+        inputValue[3] = 0x04;
+        const result = IpcDataHelper.uint8ArrayToBuffer(inputValue);
+        const expectResult = Buffer.alloc(4);
+        expectResult[0] = 0x01;
+        expectResult[1] = 0x02;
+        expectResult[2] = 0x03;
+        expectResult[3] = 0x04;
+        expect(result).toEqual(expectResult);
+    });
+
+    test('check encode base64', () => {
+        const inputValue = new Uint8Array(4);
+        inputValue[0] = 0x01;
+        inputValue[1] = 0x02;
+        inputValue[2] = 0x03;
+        inputValue[3] = 0x04;
+        const result = IpcDataHelper.encode('base64', inputValue);
+        const expectResult = {
+            type: 'base64',
+            data: 'AQIDBA=='
+        };
+        expect(result).toEqual(expectResult);
+
+        const inputValue1 = Buffer.alloc(4);
+        inputValue1[0] = 0x01;
+        inputValue1[1] = 0x02;
+        inputValue1[2] = 0x03;
+        inputValue1[3] = 0x04;
+        const result1 = IpcDataHelper.encode('base64', inputValue1);
+        expect(result1).toEqual(expectResult);
+    });
+
+    test('check encode hex', () => {
+        const inputValue = new Uint8Array(4);
+        inputValue[0] = 0x01;
+        inputValue[1] = 0x02;
+        inputValue[2] = 0x03;
+        inputValue[3] = 0x04;
+        const result = IpcDataHelper.encode('hex', inputValue);
+        const expectResult = {
+            type: 'hex',
+            data: '01020304'
+        };
+        expect(result).toEqual(expectResult);
+
+        const inputValue1 = Buffer.alloc(4);
+        inputValue1[0] = 0x01;
+        inputValue1[1] = 0x02;
+        inputValue1[2] = 0x03;
+        inputValue1[3] = 0x04;
+        const result1 = IpcDataHelper.encode('hex', inputValue1);
+        expect(result1).toEqual(expectResult);
+    });
+
+    test('check decode base64', () => {
+        const inputValue = 'AQIDBA==';
+        const result = IpcDataHelper.decode('base64', inputValue);
+        const expectResult = Buffer.alloc(4);
+        expectResult[0] = 0x01;
+        expectResult[1] = 0x02;
+        expectResult[2] = 0x03;
+        expectResult[3] = 0x04;
+        expect(result).toEqual(expectResult);
+    });
+
+    test('check decode hex', () => {
+        const inputValue = '01020304';
+        const result = IpcDataHelper.decode('hex', inputValue);
+        const expectResult = Buffer.alloc(4);
+        expectResult[0] = 0x01;
+        expectResult[1] = 0x02;
+        expectResult[2] = 0x03;
+        expectResult[3] = 0x04;
+        expect(result).toEqual(expectResult);
+    });
+
+});
 
 describe('IpcSender check', () => {
     test('check constructor', () => {

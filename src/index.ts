@@ -1,4 +1,125 @@
+export interface IpcData {
 
+  /**
+   * 数据类型
+   */
+  type: BufferEncoding;
+
+  /**
+   * 数据的具体值,本质为字符串,hex为16进制字符串'0e3a'
+   */
+  data: string;
+}
+/**
+ * ipc通信的数据类型,用来对数据进行解码编码
+ */
+export class IpcDataHelper {
+
+  /**
+   * Uint8 array 转换成 buffer
+   * @param u8 输入的Uint8 array
+   * @returns 转换后的buffer
+   */
+  static uint8ArrayToBuffer(u8: Uint8Array): Buffer {
+    return Buffer.from(u8);
+  }
+
+  /**
+   * Base64转换为buffer
+   * @param base64 输入的base64
+   * @returns 转换后的buffer
+   */
+  static base64ToBuffer(base64: string): Buffer {
+    const buff = Buffer.from(base64, 'base64');
+    return buff;
+  }
+
+  /**
+   * hex转换为buffer
+   * @param hex 输入的hex
+   * @returns 转换后的buffer
+   */
+  static hexToBuffer(hex: string): Buffer {
+    return Buffer.from(hex, 'hex');
+  }
+  /**
+   * string转换为buffer
+   * @param string 输入的字符串
+   * @param encoding 字符串的编码
+   * @returns 转换后的buffer
+   */
+  static stringToBuffer(str: string, encoding: BufferEncoding = 'utf8'): Buffer {
+    const result = Buffer.from(str, encoding);
+    return result;
+  }
+
+  /**
+   * Buffer转换为hex
+   * @param buffer 输入的buffer
+   * @returns 返回的hex字符串
+   */
+  static bufferToHex(buffer: Buffer): string {
+    const result = buffer.toString('hex');
+    return result;
+  }
+
+  /**
+   * Buffer转换为hex
+   * @param buffer 输入的buffer
+   * @param encoding 字符串的编码
+   * @returns 返回的字符串
+   */
+  static bufferToString(buffer: Buffer, encoding: BufferEncoding = 'utf8'): string {
+    const result = buffer.toString(encoding);
+    return result;
+  }
+
+  /**
+   * Buffer转换为base64
+   * @param buffer 输入的buffer
+   * @returns 返回的字符串
+   */
+  static bufferToBase64(buff: Buffer): string {
+    return buff.toString('base64');
+  }
+
+  /**
+   * Buffer 转换为 uint8Array
+   * @param buffer 输入的buffer
+   * @returns 返回的uint8Array
+   */
+  static bufferToUint8Array(buffer: Buffer): Uint8Array {
+    return new Uint8Array(buffer);
+  }
+
+  /**
+   * 将数据打包成IpcData格式
+   * @param type 转换后字符串的编码
+   * @param inputData 输入的byte数据
+   * @returns 生成的IpcData对象
+   */
+  static encode(type: BufferEncoding, inputData: Uint8Array | Buffer): IpcData {
+    let stringValue: string | null = null;
+    if (inputData instanceof Uint8Array) {
+      inputData = IpcDataHelper.uint8ArrayToBuffer(inputData);
+    }
+    stringValue = IpcDataHelper.bufferToString(inputData as Buffer, type);
+    const encodeData: any = {
+      type,
+      data: stringValue
+    };
+    return encodeData;
+  }
+  /**
+   * 将数据根据编码解析成buffer
+   * @param type 转换的字符串的编码
+   * @param inputData 输入的string数据
+   * @returns 生成的buffer
+   */
+  static decode(type: BufferEncoding, inputData: string): Buffer {
+    return IpcDataHelper.stringToBuffer(inputData, type);
+  }
+}
 /**
  * 回调函数中的发送给渲染进程的辅助类
  */
@@ -166,10 +287,10 @@ export class IpcNode {
   /**
    * 向渲染进程发送topic消息
    * @param topic 消息的topic
-   * @param topicMessage tpoic的消息的消息体
+   * @param topicMessage tpoic的消息的消息体,默认为空对象
    * @returns  该return用以进行单元测试无需关注
    */
-  send(topic: string, topicMessage: any) {
+  send(topic: string, topicMessage: any = null) {
     const message = {
       __type: 'yzb_ipc_renderer_message',
       topic,
