@@ -1,4 +1,60 @@
+/**
+ * ipc通信的数据类型,用来对数据进行解码编码
+ */
+export class IpcDataHelper {
+  static toBase64(u8: Uint8Array) {
+    return Buffer.from(u8).toString('base64');
+  }
+  static fromBase64(base64: string) {
+    const buff = Buffer.from(base64, 'base64');
+    return buff;
+  }
+  static hexToBytes(hex: string) {
+    const u8Array = new Uint8Array(hex.length / 2);
+    for (let c = 0; c < hex.length; c += 2) {
+      const subString = hex.substring(c, c + 2);
+      const value = parseInt(subString, 16);
+      const index = c / 2;
+      u8Array[index] = value;
+    }
+    return u8Array;
+  }
 
+  static bytesToHex(bytes: Uint8Array) {
+    const hex: Array<string> = [];
+    // tslint:disable-next-line: prefer-for-of
+    for (let i = 0; i < bytes.length; i++) {
+      const current = bytes[i] < 0 ? bytes[i] + 256 : bytes[i];
+      // tslint:disable-next-line: no-bitwise
+      hex.push((current >>> 4).toString(16));
+      // tslint:disable-next-line: no-bitwise
+      hex.push((current & 0xF).toString(16));
+    }
+    return hex.join('');
+  }
+
+  static encode(type: 'base64' | 'hex' | 'string', data: Uint8Array) {
+    let stringValue: string | null = null;
+    switch (type) {
+      case 'base64':
+        stringValue = IpcDataHelper.toBase64(data);
+        break;
+      case 'hex':
+        stringValue = IpcDataHelper.bytesToHex(data);
+        break;
+      case 'string':
+        stringValue = IpcDataHelper.toBase64(data);
+        break;
+      default:
+        break;
+    }
+    return {
+      type,
+
+    };
+  }
+  static decode(type: 'base64' | 'hex' | 'string', data: string) { }
+}
 /**
  * 回调函数中的发送给渲染进程的辅助类
  */
