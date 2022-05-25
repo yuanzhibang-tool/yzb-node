@@ -26,7 +26,7 @@ export class IpcDataHelper {
 
   /**
    * Base64转换为buffer
-   * @param base64 输入的base64 
+   * @param base64 输入的base64
    * @returns 转换后的buffer
    */
   static base64ToBuffer(base64: string): Buffer {
