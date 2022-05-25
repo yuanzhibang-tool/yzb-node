@@ -1,67 +1,101 @@
+export interface IpcData {
+
+  /**
+   * 数据类型
+   */
+  type: 'base64' | 'hex' | 'string';
+
+  /**
+   * 数据的具体值,本质为字符串,hex为16进制字符串'0e3a'
+   */
+  data: string;
+}
 /**
  * ipc通信的数据类型,用来对数据进行解码编码
  */
 export class IpcDataHelper {
-  static toBase64(u8: Uint8Array) {
-    return Buffer.from(u8).toString('base64');
+
+  static uint8ArrayToBuffer(u8: Uint8Array) {
+    return Buffer.from(u8);
   }
-  static fromBase64(base64: string) {
+  static base64ToBuffer(base64: string) {
     const buff = Buffer.from(base64, 'base64');
     return buff;
   }
-  static hexToBytes(hex: string) {
-    const u8Array = Buffer.alloc(hex.length / 2);
-    for (let c = 0; c < hex.length; c += 2) {
-      const subString = hex.substring(c, c + 2);
-      const value = parseInt(subString, 16);
-      const index = c / 2;
-      u8Array[index] = value;
-    }
-    return u8Array;
+  static hexToBuffer(hex: string) {
+    return Buffer.from(hex, 'hex');
+  }
+  static stringToBuffer(str: string, encoding: BufferEncoding = 'utf8') {
+    const result = Buffer.from(str, encoding);
+    return result;
   }
 
-  static bytesToHex(bytes: Buffer) {
-    const hex: Array<string> = [];
-    // tslint:disable-next-line: prefer-for-of
-    for (let i = 0; i < bytes.length; i++) {
-      const current = bytes[i] < 0 ? bytes[i] + 256 : bytes[i];
-      // tslint:disable-next-line: no-bitwise
-      hex.push((current >>> 4).toString(16));
-      // tslint:disable-next-line: no-bitwise
-      hex.push((current & 0xF).toString(16));
-    }
-    return hex.join('');
+  static bufferToHex(buffer: Buffer) {
+    const result = buffer.toString('hex');
+    return result;
   }
 
-  static bufferToUInt8(buffer: Buffer) {
+  static bufferToString(buffer: Buffer, encoding: BufferEncoding = 'utf8') {
+    const result = buffer.toString(encoding);
+    return result;
+  }
+  static bufferToBase64(buff: Buffer) {
+    return buff.toString('base64');
+  }
+
+  static bufferToUint8Array(buffer: Buffer) {
     return new Uint8Array(buffer);
   }
 
-  static uint8ToBuffer(u8: Uint8Array) {
-    return Buffer.from(u8);
-  }
-
-  static encode(type: 'base64' | 'hex' | 'string', data: any) {
+  static encode(type: 'base64' | 'hex' | 'string', inputData: Uint8Array | Buffer, encoding: BufferEncoding = 'utf8') {
     let stringValue: string | null = null;
     switch (type) {
       case 'base64':
-        stringValue = IpcDataHelper.toBase64(data);
+        if (inputData instanceof Uint8Array) {
+          stringValue = IpcDataHelper.bufferToBase64(IpcDataHelper.uint8ArrayToBuffer(inputData));
+        } else if ((inputData as any) instanceof Buffer) {
+          stringValue = IpcDataHelper.bufferToBase64(inputData);
+        }
         break;
       case 'hex':
-        stringValue = IpcDataHelper.bytesToHex(data);
+        if (inputData instanceof Uint8Array) {
+          stringValue = IpcDataHelper.bufferToHex(IpcDataHelper.uint8ArrayToBuffer(inputData));
+        } else if ((inputData as any) instanceof Buffer) {
+          stringValue = IpcDataHelper.bufferToHex(inputData as Buffer);
+        }
         break;
       case 'string':
-        stringValue = IpcDataHelper.toBase64(data);
+        if (inputData instanceof Uint8Array) {
+          stringValue = IpcDataHelper.bufferToString(IpcDataHelper.uint8ArrayToBuffer(inputData), encoding);
+        } else if ((inputData as any) instanceof Buffer) {
+          stringValue = IpcDataHelper.bufferToString(inputData, encoding);
+        }
         break;
       default:
+        throw new Error(`input data not support type '${type}'`);
         break;
     }
     return {
       type,
-
+      data: stringValue
     };
   }
-  static decode(type: 'base64' | 'hex' | 'string', data: string) { }
+  static decode(type: 'base64' | 'hex' | 'string', inputData: string, encoding: BufferEncoding = 'utf8') {
+    switch (type) {
+      case 'base64':
+        return IpcDataHelper.base64ToBuffer(inputData);
+        break;
+      case 'hex':
+        return IpcDataHelper.hexToBuffer(inputData);
+        break;
+      case 'string':
+        return IpcDataHelper.stringToBuffer(inputData, encoding);
+        break;
+      default:
+        throw new Error(`input data not support type '${type}'`);
+        break;
+    }
+  }
 }
 /**
  * 回调函数中的发送给渲染进程的辅助类
