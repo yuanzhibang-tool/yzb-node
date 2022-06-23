@@ -1,3 +1,8 @@
+export enum SystemMessageTopicType {
+  ON_START_INIT = 'on_start_init',
+  ON_ON_FINISH_INIT = 'on_finish_init'
+}
+
 export interface IpcData {
 
   /**
@@ -299,6 +304,15 @@ export class IpcNode {
     if (process.send) {
       return process.send(message);
     }
+  }
+  // 发送开始初始化事件给渲染端
+  sendOnStartInit(initData: any) {
+    this.send(SystemMessageTopicType.ON_START_INIT, initData);
+  }
+
+  // 发送完成初始化事件给渲染端
+  sendOnFinishInit(initData: any) {
+    this.send(SystemMessageTopicType.ON_ON_FINISH_INIT, initData);
   }
 }
 
