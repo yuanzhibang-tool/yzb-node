@@ -1,6 +1,7 @@
 export enum ExtensionEventMessageTopicType {
   ON_START_INIT = 'on_start_init',
-  ON_ON_FINISH_INIT = 'on_finish_init'
+  ON_FINISH_INIT = 'on_finish_init',
+  ON_WILL_EXIT = 'on_will_exit'
 }
 
 export interface IpcData {
@@ -319,7 +320,15 @@ export class IpcNode {
    * @param initData 初始化相关数据，可以为null
    */
   sendOnFinishInit(initData: any) {
-    this.send(ExtensionEventMessageTopicType.ON_ON_FINISH_INIT, initData);
+    this.send(ExtensionEventMessageTopicType.ON_FINISH_INIT, initData);
+  }
+
+  /**
+   * 发送即将退出事件给渲染端
+   * @param initData 初始化相关数据，可以为null
+   */
+  sendOnWillExit(initData: any) {
+    this.send(ExtensionEventMessageTopicType.ON_WILL_EXIT, initData);
   }
 }
 
