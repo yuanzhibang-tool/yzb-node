@@ -305,12 +305,19 @@ export class IpcNode {
       return process.send(message);
     }
   }
-  // 发送开始初始化事件给渲染端
+
+  /**
+   * 发送开始初始化事件给渲染端
+   * @param initData 初始化相关数据，可以为null
+   */
   sendOnStartInit(initData: any) {
     this.send(ExtensionEventMessageTopicType.ON_START_INIT, initData);
   }
 
-  // 发送完成初始化事件给渲染端
+  /**
+   * 发送完成初始化事件给渲染端
+   * @param initData 初始化相关数据，可以为null
+   */
   sendOnFinishInit(initData: any) {
     this.send(ExtensionEventMessageTopicType.ON_ON_FINISH_INIT, initData);
   }
