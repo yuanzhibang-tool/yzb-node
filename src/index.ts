@@ -325,7 +325,7 @@ export class IpcNode {
 
   /**
    * 发送即将退出事件给渲染端
-   * @param initData 初始化相关数据，可以为null
+   * @param initData 将要退出需要传递的相关数据，可以为null
    */
   sendOnWillExit(initData: any) {
     this.send(ExtensionEventMessageTopicType.ON_WILL_EXIT, initData);
