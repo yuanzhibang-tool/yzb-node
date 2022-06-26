@@ -325,7 +325,7 @@ export class IpcNode {
    * 发送完成初始化事件给渲染端
    * @param initData 初始化相关数据，可以为null
    */
-  sendOnFinishInit(initData: any) {
+  sendOnInit(initData: any) {
     this.send(ExtensionEventMessageTopicType.ON_INIT, initData);
   }
 
