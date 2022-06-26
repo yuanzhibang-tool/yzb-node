@@ -1,7 +1,13 @@
 export enum ExtensionEventMessageTopicType {
-  ON_START_INIT = 'on_start_init',
-  ON_FINISH_INIT = 'on_finish_init',
-  ON_WILL_EXIT = 'on_will_exit'
+  ON_START_INIT = '__on_start_init',
+  ON_FINISH_INIT = '__on_finish_init',
+  ON_WILL_EXIT = '__on_will_exit',
+  ON_MESSAGE = '__on_message',
+  ON_EXIT = '__on_exit',
+  ON_ERROR = '__on_exit',
+  ON_CLOSE = '__on_close',
+  ON_STDERR = '__on_stderr',
+  ON_STDOUT = '__on_stdout',
 }
 
 export interface IpcData {
