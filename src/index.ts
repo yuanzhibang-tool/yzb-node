@@ -1,4 +1,4 @@
-import { ExtensionEventMessageTopicType } from "@yuanzhibang/common";
+import { ExtensionLifecycleEventMessageTopic, ExtensionRendererMessageTopic } from "@yuanzhibang/common";
 
 export interface IpcData {
 
@@ -129,7 +129,7 @@ export class IpcSender {
   /**
    * 内部变量无需关注,用以进行回调的识别字符串
    */
-  identity: string;
+  private identity: string;
 
   /**
    * 创建类实例
@@ -163,7 +163,7 @@ export class IpcSender {
    * @param result 对应的错误还是结果值
    * @returns 无需关注该返回值,该返回值用以进行单元测试
    */
-  sendMessageWithType(type: string, result: any) {
+  private sendMessageWithType(type: string, result: any) {
     const message = this.getMessage(type, result);
     if (process.send) {
       return process.send(message);
@@ -176,7 +176,7 @@ export class IpcSender {
    * @param result 对应的错误还是结果值
    * @returns 无需关注该返回值,该返回值用以进行单元测试
    */
-  getMessage(type: string, result: any) {
+  private getMessage(type: string, result: any) {
     const message = {
       __type: 'yzb_ipc_node_message',
       identity: this.identity,
@@ -196,12 +196,12 @@ export class IpcNode {
   /**
    * 内部变量无需关注,on保存的回调保存map
    */
-  messageCallbackMap = new Map<string, (sender: IpcSender, message: any) => void>();
+  private messageCallbackMap = new Map<string, (sender: IpcSender, message: any) => void>();
 
   /**
    * 内部变量无需关注,once保存的回调保存map
    */
-  onceMessageCallbackMap = new Map<string, (sender: IpcSender, message: any) => void>();
+  private onceMessageCallbackMap = new Map<string, (sender: IpcSender, message: any) => void>();
   /**
    * 创建类实例
    */
@@ -237,6 +237,21 @@ export class IpcNode {
         }
       }
     });
+  }
+
+  /**
+   * 监听渲染进程发送来的用户主动退出的消息
+   * @param callback 收到用户退出消息的回调,sender用以向渲染进程发送next/then,或者error回调结果,message为topic消息的消息体
+   */
+  onUserExit(callback: (sender: IpcSender, message: any) => void) {
+    this.on(ExtensionRendererMessageTopic.USER_EXIT, callback);
+  }
+  /**
+  * 监听渲染进程发送来的获取extension属性的消息
+  * @param callback 收到获取extension属性的回调,sender用以向渲染进程发送next/then,或者error回调结果,message为topic消息的消息体
+  */
+  onGetProperty(callback: (sender: IpcSender, message: any) => void) {
+    this.on(ExtensionRendererMessageTopic.USER_EXIT, callback);
   }
 
   /**
@@ -308,7 +323,7 @@ export class IpcNode {
    * @param data 初始化相关数据，可以为null
    */
   sendOnWillInit(data: any) {
-    this.send(ExtensionEventMessageTopicType.ON_WILL_INIT, data);
+    this.send(ExtensionLifecycleEventMessageTopic.ON_WILL_INIT, data);
   }
 
   /**
@@ -316,7 +331,7 @@ export class IpcNode {
    * @param data 初始化相关数据，可以为null
    */
   sendOnInit(data: any) {
-    this.send(ExtensionEventMessageTopicType.ON_INIT, data);
+    this.send(ExtensionLifecycleEventMessageTopic.ON_INIT, data);
   }
 
   /**
@@ -324,7 +339,7 @@ export class IpcNode {
    * @param data 将要退出需要传递的相关数据，可以为null
    */
   sendOnWillExit(data: any) {
-    this.send(ExtensionEventMessageTopicType.ON_WILL_EXIT, data);
+    this.send(ExtensionLifecycleEventMessageTopic.ON_WILL_EXIT, data);
   }
 }
 
