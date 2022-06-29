@@ -251,7 +251,7 @@ export class IpcNode {
   * @param callback 收到获取extension属性的回调,sender用以向渲染进程发送next/then,或者error回调结果,message为topic消息的消息体
   */
   onGetProperty(callback: (sender: IpcSender, message: any) => void) {
-    this.on(ExtensionRendererMessageTopic.USER_EXIT, callback);
+    this.on(ExtensionRendererMessageTopic.GET_PROPERTY, callback);
   }
 
   /**
