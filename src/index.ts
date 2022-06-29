@@ -1,3 +1,5 @@
+import { ExtensionLifecycleEventMessageTopic, ExtensionRendererMessageTopic } from "@yuanzhibang/common";
+
 export interface IpcData {
 
   /**
@@ -238,6 +240,21 @@ export class IpcNode {
   }
 
   /**
+   * 监听渲染进程发送来的用户主动退出的消息
+   * @param callback 收到用户退出消息的回调,sender用以向渲染进程发送next/then,或者error回调结果,message为topic消息的消息体
+   */
+  onUserExit(callback: (sender: IpcSender, message: any) => void) {
+    this.on(ExtensionRendererMessageTopic.USER_EXIT, callback);
+  }
+  /**
+  * 监听渲染进程发送来的获取extension属性的消息
+  * @param callback 收到获取extension属性的回调,sender用以向渲染进程发送next/then,或者error回调结果,message为topic消息的消息体
+  */
+  onGetProperty(callback: (sender: IpcSender, message: any) => void) {
+    this.on(ExtensionRendererMessageTopic.USER_EXIT, callback);
+  }
+
+  /**
    * 监听渲染进程发送来的topic消息,除非取消监听或者拓展进程生命周期结束,否则该监听一直有效
    * @param topic 监听的topic
    * @param callback 收到topic消息的回调,sender用以向渲染进程发送next/then,或者error回调结果,message为topic消息的消息体
@@ -247,7 +264,7 @@ export class IpcNode {
       this.messageCallbackMap.has(topic) ||
       this.onceMessageCallbackMap.has(topic)
     ) {
-      throw new Error('you can not listen a topic twice!');
+      throw new Error(`you can not listen a topic twice! topic: ${topic}`);
     }
     this.messageCallbackMap.set(topic, callback);
   }
@@ -262,7 +279,7 @@ export class IpcNode {
       this.messageCallbackMap.has(topic) ||
       this.onceMessageCallbackMap.has(topic)
     ) {
-      throw new Error('you can not listen a topic twice!');
+      throw new Error(`you can not listen a topic twice! topic: ${topic}`);
     }
     this.onceMessageCallbackMap.set(topic, callback);
   }
@@ -299,6 +316,30 @@ export class IpcNode {
     if (process.send) {
       return process.send(message);
     }
+  }
+
+  /**
+   * 发送开始初始化事件给渲染端
+   * @param data 初始化相关数据，可以为null
+   */
+  sendOnWillInit(data: any) {
+    this.send(ExtensionLifecycleEventMessageTopic.ON_WILL_INIT, data);
+  }
+
+  /**
+   * 发送完成初始化事件给渲染端
+   * @param data 初始化相关数据，可以为null
+   */
+  sendOnInit(data: any) {
+    this.send(ExtensionLifecycleEventMessageTopic.ON_INIT, data);
+  }
+
+  /**
+   * 发送即将退出事件给渲染端
+   * @param data 将要退出需要传递的相关数据，可以为null
+   */
+  sendOnWillExit(data: any) {
+    this.send(ExtensionLifecycleEventMessageTopic.ON_WILL_EXIT, data);
   }
 }
 
