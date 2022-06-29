@@ -264,7 +264,7 @@ export class IpcNode {
       this.messageCallbackMap.has(topic) ||
       this.onceMessageCallbackMap.has(topic)
     ) {
-      throw new Error('you can not listen a topic twice!');
+      throw new Error(`you can not listen a topic twice! topic: ${topic}`);
     }
     this.messageCallbackMap.set(topic, callback);
   }
@@ -279,7 +279,7 @@ export class IpcNode {
       this.messageCallbackMap.has(topic) ||
       this.onceMessageCallbackMap.has(topic)
     ) {
-      throw new Error('you can not listen a topic twice!');
+      throw new Error(`you can not listen a topic twice! topic: ${topic}`);
     }
     this.onceMessageCallbackMap.set(topic, callback);
   }
