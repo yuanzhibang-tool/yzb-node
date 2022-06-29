@@ -250,7 +250,7 @@ describe('IpcNode check', () => {
         try {
             instance.on(testTopic, testOnCallback1);
         } catch (error: any) {
-            expect(error.message).toEqual('you can not listen a topic twice!');
+            expect(error.message).toEqual(`you can not listen a topic twice! topic: ${testTopic}`);
         }
         expect(instance.messageCallbackMap.size).toEqual(1);
         expect(instance.messageCallbackMap.get(testTopic)).toEqual(testOnCallback);
@@ -258,7 +258,7 @@ describe('IpcNode check', () => {
         try {
             instance.once(testTopic, testOnCallback1);
         } catch (error: any) {
-            expect(error.message).toEqual('you can not listen a topic twice!');
+            expect(error.message).toEqual(`you can not listen a topic twice! topic: ${testTopic}`);
         }
         expect(instance.onceMessageCallbackMap.size).toEqual(0);
     });
@@ -282,14 +282,14 @@ describe('IpcNode check', () => {
         try {
             instance.once(testTopic, testOnCallback1);
         } catch (error: any) {
-            expect(error.message).toEqual('you can not listen a topic twice!');
+            expect(error.message).toEqual(`you can not listen a topic twice! topic: ${testTopic}`);
         }
         expect(instance.onceMessageCallbackMap.size).toEqual(1);
         expect(instance.onceMessageCallbackMap.get(testTopic)).toEqual(testOnCallback);
         try {
             instance.on(testTopic, testOnCallback1);
         } catch (error: any) {
-            expect(error.message).toEqual('you can not listen a topic twice!');
+            expect(error.message).toEqual(`you can not listen a topic twice! topic: ${testTopic}`);
         }
         expect(instance.messageCallbackMap.size).toEqual(0);
     });

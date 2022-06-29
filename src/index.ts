@@ -129,7 +129,7 @@ export class IpcSender {
   /**
    * 内部变量无需关注,用以进行回调的识别字符串
    */
-  private identity: string;
+  identity: string;
 
   /**
    * 创建类实例
@@ -163,7 +163,7 @@ export class IpcSender {
    * @param result 对应的错误还是结果值
    * @returns 无需关注该返回值,该返回值用以进行单元测试
    */
-  private sendMessageWithType(type: string, result: any) {
+  sendMessageWithType(type: string, result: any) {
     const message = this.getMessage(type, result);
     if (process.send) {
       return process.send(message);
@@ -176,7 +176,7 @@ export class IpcSender {
    * @param result 对应的错误还是结果值
    * @returns 无需关注该返回值,该返回值用以进行单元测试
    */
-  private getMessage(type: string, result: any) {
+  getMessage(type: string, result: any) {
     const message = {
       __type: 'yzb_ipc_node_message',
       identity: this.identity,
@@ -196,12 +196,12 @@ export class IpcNode {
   /**
    * 内部变量无需关注,on保存的回调保存map
    */
-  private messageCallbackMap = new Map<string, (sender: IpcSender, message: any) => void>();
+  messageCallbackMap = new Map<string, (sender: IpcSender, message: any) => void>();
 
   /**
    * 内部变量无需关注,once保存的回调保存map
    */
-  private onceMessageCallbackMap = new Map<string, (sender: IpcSender, message: any) => void>();
+  onceMessageCallbackMap = new Map<string, (sender: IpcSender, message: any) => void>();
   /**
    * 创建类实例
    */
