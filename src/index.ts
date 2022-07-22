@@ -322,7 +322,7 @@ export class IpcNode {
    * 发送开始初始化事件给渲染端
    * @param data 初始化相关数据，可以为null
    */
-  sendOnWillInit(data: any) {
+  sendOnWillInit(data: any = null) {
     this.send(ExtensionLifecycleEventMessageTopic.ON_WILL_INIT, data);
   }
 
@@ -330,7 +330,7 @@ export class IpcNode {
    * 发送完成初始化事件给渲染端
    * @param data 初始化相关数据，可以为null
    */
-  sendOnInit(data: any) {
+  sendOnInit(data: any = null) {
     this.send(ExtensionLifecycleEventMessageTopic.ON_INIT, data);
   }
 
@@ -338,7 +338,7 @@ export class IpcNode {
    * 发送即将退出事件给渲染端
    * @param data 将要退出需要传递的相关数据，可以为null
    */
-  sendOnWillExit(data: any) {
+  sendOnWillExit(data: any = null) {
     this.send(ExtensionLifecycleEventMessageTopic.ON_WILL_EXIT, data);
   }
 }
