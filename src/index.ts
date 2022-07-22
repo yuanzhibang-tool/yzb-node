@@ -154,6 +154,10 @@ export class IpcSender {
    * @returns 无需关注该返回值,该返回值用以进行单元测试
    */
   error(error: any = null) {
+    if (error instanceof Error) {
+      const errorJson = JSON.stringify(error, Object.getOwnPropertyNames(error));
+      error = JSON.parse(errorJson);
+    }
     return this.sendMessageWithType('error', error);
   }
 
