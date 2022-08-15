@@ -228,6 +228,7 @@ export class IpcNode {
                 try {
                   callback(sender, messageTopicMessage);
                 } catch (error) {
+                  console.error(error);
                 }
               }
             } else if (this.onceMessageCallbackMap.has(messageTopic)) {
@@ -236,6 +237,7 @@ export class IpcNode {
                 try {
                   callback(sender, messageTopicMessage);
                 } catch (error) {
+                  console.error(error);
                 }
               }
               // 执行完毕后,清除回调
