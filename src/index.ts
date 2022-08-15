@@ -225,12 +225,18 @@ export class IpcNode {
             if (this.messageCallbackMap.has(messageTopic)) {
               const callback = this.messageCallbackMap.get(messageTopic);
               if (callback) {
-                callback(sender, messageTopicMessage);
+                try {
+                  callback(sender, messageTopicMessage);
+                } catch (error) {
+                }
               }
             } else if (this.onceMessageCallbackMap.has(messageTopic)) {
               const callback = this.onceMessageCallbackMap.get(messageTopic);
               if (callback) {
-                callback(sender, messageTopicMessage);
+                try {
+                  callback(sender, messageTopicMessage);
+                } catch (error) {
+                }
               }
               // 执行完毕后,清除回调
               this.onceMessageCallbackMap.delete(messageTopic);
