@@ -1,4 +1,4 @@
-import { ExtensionLifecycleEventMessageTopic, ExtensionRendererMessageTopic } from "@yuanzhibang/common";
+import { ExtensionLifecycleEventMessageTopic, ExtensionRendererMessageTopic, IpcMessageTopic } from "@yuanzhibang/common";
 
 export interface IpcData {
 
@@ -222,29 +222,28 @@ export class IpcNode {
             const messageTopicMessage = data.message;
             // 查找对应的回调,有则执行,无则不执行
             const sender = new IpcSender(messageIdentity);
-            if (this.messageCallbackMap.has(messageTopic)) {
-              const callback = this.messageCallbackMap.get(messageTopic);
-              if (callback) {
-                try {
-                  callback(sender, messageTopicMessage);
-                } catch (error) {
-                  console.error(error);
+            this.messageCallbackMap.forEach((callback, topic) => {
+              if (IpcMessageTopic.isSubTopic(topic, messageTopic)) {
+                if (callback) {
+                  try {
+                    callback(sender, messageTopicMessage);
+                  } catch (error) {
+                    console.error(error);
+                  }
                 }
               }
-            } else if (this.onceMessageCallbackMap.has(messageTopic)) {
-              const callback = this.onceMessageCallbackMap.get(messageTopic);
-              if (callback) {
-                try {
-                  callback(sender, messageTopicMessage);
-                } catch (error) {
-                  console.error(error);
+            });
+            this.onceMessageCallbackMap.forEach((callback, topic) => {
+              if (IpcMessageTopic.isSubTopic(topic, messageTopic)) {
+                if (callback) {
+                  try {
+                    callback(sender, messageTopicMessage);
+                  } catch (error) {
+                    console.error(error);
+                  }
                 }
               }
-              // 执行完毕后,清除回调
-              this.onceMessageCallbackMap.delete(messageTopic);
-            } else {
-              // 没有回调可执行
-            }
+            });
           }
         }
       }
@@ -320,6 +319,7 @@ export class IpcNode {
    * @returns  该return用以进行单元测试无需关注
    */
   send(topic: string, topicMessage: any = null) {
+    IpcMessageTopic.checkValid(topic);
     const message = {
       __type: 'yzb_ipc_renderer_message',
       topic,
