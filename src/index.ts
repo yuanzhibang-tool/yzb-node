@@ -242,6 +242,7 @@ export class IpcNode {
                     console.error(error);
                   }
                 }
+                this.onceMessageCallbackMap.delete(topic);
               }
             });
           }
