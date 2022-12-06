@@ -319,12 +319,13 @@ export class IpcNode {
    * @param topicMessage tpoic的消息的消息体,默认为空对象
    * @returns  该return用以进行单元测试无需关注
    */
-  send(topic: string, topicMessage: any = null) {
+  send(topic: string, topicMessage: any = null, extra: any = null) {
     IpcMessageTopic.checkValid(topic);
     const message = {
       __type: 'yzb_ipc_renderer_message',
       topic,
       message: topicMessage,
+      extra
     };
     if (process.send) {
       return process.send(message);
