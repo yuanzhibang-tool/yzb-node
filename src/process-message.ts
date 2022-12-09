@@ -11,6 +11,10 @@ export class ProcessMessage {
         } else {
             this.tmpFileDir = process.env.PROCESS_MESSAGE_TMP_DIR as any;
         }
+        if (!this.tmpFileDir) {
+            throw new Error("the process.env.PROCESS_MESSAGE_TMP_DIR must be set");
+
+        }
         if (!fs.existsSync(this.tmpFileDir)) {
             fs.mkdirSync(this.tmpFileDir, { recursive: true });
         }
