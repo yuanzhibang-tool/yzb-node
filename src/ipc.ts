@@ -1,8 +1,6 @@
 import { ExtensionLifecycleEventMessageTopic, ExtensionRendererMessageTopic, IpcMessageTopic } from "@yuanzhibang/common";
 import { ProcessMessage } from './process-message';
 
-const processMessage = new ProcessMessage();
-
 export interface IpcData {
 
     /**
@@ -173,6 +171,7 @@ export class IpcSender {
     sendMessageWithType(type: string, result: any) {
         const message = this.getMessage(type, result);
         if (process.send) {
+            const processMessage = new ProcessMessage();
             const sendEncodeMessage = processMessage.encodeMessage(message);
             return process.send(sendEncodeMessage);
         }
@@ -215,6 +214,7 @@ export class IpcNode {
      */
     constructor() {
         process.on('message', (messageObject: any) => {
+            const processMessage = new ProcessMessage();
             messageObject = processMessage.decodeMessage(messageObject);
             if (messageObject !== null && typeof messageObject === 'object') {
                 if (messageObject.hasOwnProperty('__type')) {
@@ -333,6 +333,7 @@ export class IpcNode {
             extra
         };
         if (process.send) {
+            const processMessage = new ProcessMessage();
             const sendEncodeMessage = processMessage.encodeMessage(message);
             return process.send(sendEncodeMessage);
         }
