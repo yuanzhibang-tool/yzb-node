@@ -36,7 +36,7 @@
     }
   },
   "dependencies": {
-    "@yuanzhibang/common": "^0.0.12",
+    "@yuanzhibang/common": "^0.0.14",
     "tslib": "^2.4.1"
   }
 }
