@@ -64,7 +64,7 @@ export class ProcessMessage {
             const stringContent = fs.readFileSync(messagePath, {
                 encoding: 'utf8',
             });
-            fs.unlinkSync(messagePath);
+            fs.rm(messagePath);
             if (messageContentType === 'object') {
                 return JSON.parse(stringContent);
             } else {
