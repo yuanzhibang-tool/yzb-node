@@ -64,7 +64,8 @@ export class ProcessMessage {
             const stringContent = fs.readFileSync(messagePath, {
                 encoding: 'utf8',
             });
-            fs.rm(messagePath);
+            fs.rm(messagePath, { recursive: true }, (err) => {
+            });
             if (messageContentType === 'object') {
                 return JSON.parse(stringContent);
             } else {
