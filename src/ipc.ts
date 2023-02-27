@@ -133,6 +133,10 @@ export class IpcSender {
     identity: string;
 
     /**
+     * Determines whether next or error is called
+     */
+    isResolved = false;
+    /**
      * 创建类实例
      * @param identity 用以进行回调的识别字符串
      */
@@ -146,6 +150,10 @@ export class IpcSender {
      * @returns 无需关注该返回值,该返回值用以进行单元测试
      */
     next(result: any = null) {
+        if (this.isResolved) {
+            return;
+        }
+        this.isResolved = true;
         return this.sendMessageWithType('next', result);
     }
 
@@ -155,6 +163,10 @@ export class IpcSender {
      * @returns 无需关注该返回值,该返回值用以进行单元测试
      */
     error(error: any = null) {
+        if (this.isResolved) {
+            return;
+        }
+        this.isResolved = true;
         if (error instanceof Error) {
             const errorJson = JSON.stringify(error, Object.getOwnPropertyNames(error));
             error = JSON.parse(errorJson);
